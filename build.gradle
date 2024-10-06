@@ -1,0 +1,94 @@
+
+plugins {
+    id 'scala'
+    id 'idea'
+    id 'application'
+}
+
+run {
+    standardInput = System.in
+}
+application {
+    mainClass.set("repls.RunREPL")
+}
+
+ext {
+    scalaMajorVersion = '2.13'
+    scalaVersion = '2.13.14'
+}
+
+
+repositories {
+
+    mavenCentral()
+}
+
+sourceSets.main.scala.srcDirs = ['src']
+sourceSets.test.scala.srcDirs = ['test']
+
+dependencies {
+    implementation "org.scala-lang:scala-library:${scalaVersion}"
+    implementation fileTree(include: ['*.jar'], dir: 'lib')
+    testImplementation('junit:junit:4.13.2')
+    testImplementation("org.scala-lang:scala-reflect") {
+    }
+    testImplementation('org.junit.vintage:junit-vintage-engine:5.9.0')
+    testImplementation("org.scalatest:scalatest_${scalaMajorVersion}:3.0.8")
+}
+
+
+
+
+
+task zip(type: Zip) {
+    group = "prepareZipForSubmit"
+    description = "Zip your code for submission to Codegrade"
+
+    // To make sure you can always run this task
+    outputs.upToDateWhen { false }
+    dependsOn assemble
+    dependsOn testClasses
+    from fileTree(dir: '.')
+    include 'src/repls/**.scala'
+
+    archiveFileName = 'repls.zip'
+    destinationDirectory = layout.buildDirectory.dir("$projectDir")
+}
+
+
+
+
+task test4_1(type: Test) {
+    description="Run tests for assignment 4.1 (repls)"
+    filter {
+        includeTestsMatching "repls.ReplsTestSuite4_1"
+    }
+}
+
+task test4_2(type: Test) {
+    description="Run tests for assignment 4.2 (repls)"
+    filter {
+        includeTestsMatching "repls.ReplsTestSuite4_2"
+    }
+}
+
+task fraction4_1(type: JavaExec, dependsOn: classes) {
+    // To make sure you can always run this task
+    outputs.upToDateWhen { false }
+    mainClass.set('repls.infrastructure.ReportFraction4_1')
+    classpath sourceSets.test.runtimeClasspath
+    classpath sourceSets.main.runtimeClasspath
+    //classpath configurations.runtime
+}
+
+task fraction4_2(type: JavaExec, dependsOn: classes) {
+    // To make sure you can always run this task
+    outputs.upToDateWhen { false }
+    mainClass.set('repls.infrastructure.ReportFraction4_2')
+    classpath sourceSets.test.runtimeClasspath
+    classpath sourceSets.main.runtimeClasspath
+    //classpath configurations.runtime
+}
+
+
+

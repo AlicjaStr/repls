@@ -1,9 +1,5 @@
 # REPL Calculators
 
-*Required knowledge*: To make this assignment, you need to be up to speed on the lecture up to and including pattern matching.
-
-**NOTE** This assignment is different from the previous assignments in that it **requires** you to use scala techniques such as pattern matching. The consensus among the TAs is that it is _**much harder**_ than the other assignments. Start early!!
-
 In this exercise, you will be making two calculators [REPLs](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop). The first of these is a regular calculator dealing with integers, the second operates on [MultiSets](#multisets). A lot of the techniques discussed in this course are useful to enable code reuse and this assignment gives you ample opportunity to employ these techniques since both REPLs have very similar functionality.
  
 The REPLs have three types of commands:
@@ -96,11 +92,7 @@ For some expressions, such as `(x + (0 + (0 + 0)))` it is not enough to simplify
 * Simplify until you reach a *fixpoint*. Apply rules in top-down fashion repeatedly until the expression does not change anymore. 
 
 
-## Suggested approach:
-1. Completely implement the Integer calculator Repl and make sure it passes all the tests.
-2. Implement the generic and immutable multiset, and all its accommodating functions. 
-3. Implement the Multiset calculator Repl by copying and modifying code from the Integer Repl and making sure it passes all the tests.
-4. Your code now works, but has a lot of duplicated code, which hinders maintenance and readability. Refactor your code, into REPL base, such that the common parts of both REPLs are shared.
+
 
 More detailed instructions for constructing a REPL:
 
@@ -152,8 +144,7 @@ This gives us the end result `a * b + (1 + x) * 2`.
 
 
 
-## Skeleton
-We have given a pretty barebones skeleton. This is to give you the full freedom of implementation. We have supplied you with the minimum for this assignment to work with the tests.
+
 
 ### REPLs
 For the REPL we have given a `REPLBase`, which is an abstract class. This can be used for code sharing, explained [below](#inheritance). `IntREPL` and `MultiSetREPL` extend this abstract class. You need to modify `IntREPL`, `MultiSetREPL` and `REPLBase`, with your own implementation. The `REPL` trait you cannot modify, as this is used for running the REPL. Also do not modify the `REPLFactory`, and `RunREPL`, these don't need to be implemented further.
@@ -223,39 +214,7 @@ Hint: As you want an expression tree which has `Base` elements as constants, it 
 For more information visit the scala docs [here](https://docs.scala-lang.org/tour/abstract-type-members.html).
 
 
-## Assignments
 
-There are 2 assignments for these repls:
-### 4.1 Assignment 4.1 IntREPL + MultiSet 
-
-Implement the IntREPL and the implement the MultiSet (not the MultiSet *REPL*) To pass this assignment, you need to get at least 48 points (40% of total points) from the ReplsTestSuite4_1 test suite (not all tests are valued equally, as indicated by the weight argument after test name). 
-
-Note that unlike the previous assignments, not all tests are an equal number of points, some tests weigh more than others. In the test code, if no `weight` argument is given to `test` then the weight of that test is 1.
-
-### 4.2 Assignment 4.2 MultiSetRepl + Sharing
-
-Implement the MultiRepl and share code between the MultiSet REPL and the Int Repl.
-
-Grading is mostly based on how much code is reused, and is built up as follows:
-* Amount of tests passed (`ReplTestSuite4_2`): 5.5 points
-* Reuse of common structure of `+`,`-` and `*` in `MultiSet` 0.5 points (hint : use first-class functions, all operations combine the number of times each element occurs, the difference is in how these counts are combined)
-*  Reuse of REPL code between the int repl and multiset repl
-    * Sharing of the expression representation 0.25 points
-    * Sharing of the code related to variable assignment 0.25 points
-    * Sharing of the commonalities in parsing expressions (string -> Expression)) 1 points
-    * Sharing of the commonalities in evaluating expressions 0.5 points
-
-    * Sharing of the commonalities in simplifying expressions 1. Note: You cannot get these points if you do not use pattern matching for rewriting.
-* Code style 1 points
-* Do NOT use regular expressions instead of pattern matching for rewriting. Using regular expressions for rewriting will give you 0 style points.
-
-Total : 10 points
-
-Note that to get full points for sharing code, the common code needs to go in `REPLBase` and need to have extension points (e.g. abstract methods) such that you can easily add repls by subclassing `REPLBase`.  The `REPLBase` code should not have any code specific to the Integer or Multiset REPL (this should be in their respective classes). It should for example be possible to add another repl which centers around `Booleans` *without* modifying the `REPLBase` code. For booleans, you can assume that the rules involving zero (as seen in the IntREPL/MultisetREPL) hold, but not distributivity or `e * e = e`. Hence you will for example not get full points if you have in REPLBase that checks via `if` statements or something similar whether it is handling Ints or Multisets.
-
-
-Code style is judged as described in the readable code lectures and the
- [code style grading guideline](https://canvas.vu.nl/courses/78072/pages/code-style). The maximum style grade you can get depends on how much of the previous 9 points you got. For example, if you get 4.5 points from the tests and did not do any reuse, then you maximum style points 0.5. 
 
 
 Note that the simplification rules common to IntREPL and MultiSetRepl are:
